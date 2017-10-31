@@ -40,7 +40,7 @@ public class ControlJuego {
 		Random r = new Random();
 		int r1;
 		int r2;
-		// Por cada mina, de las que hay inicialmente
+		// Por cada mina, de las que hay como iniciales
 		for (int i = MINAS_INICIALES; i > 0; i--) {
 			r1 = r.nextInt(10);
 			r2 = r.nextInt(10);
@@ -66,20 +66,21 @@ public class ControlJuego {
 					} else {
 						// Limite superior
 						if (k == 0) {
-							// Si hay una mina en la casilla
-							if (tablero[k][j] == MINA) {
-							}
+							tablero[k][j] = calculoMinasAdjuntas(k, j);
 						}
 						// Limite Inferior
-						if (k == 10) {
+						if (k == 9) {
+							tablero[k][j] = calculoMinasAdjuntas(k, j);
 
 						}
 						// Limite siniestro
 						if (j == 0) {
+							tablero[k][j] = calculoMinasAdjuntas(k, j);
 
 						}
 						// Limite diestro
-						if (j == 10) {
+						if (j == 9) {
+							tablero[k][j] = calculoMinasAdjuntas(k, j);
 
 						}
 
@@ -104,8 +105,165 @@ public class ControlJuego {
 	 * @return : El número de minas que hay alrededor de la casilla [i][j]
 	 **/
 	private int calculoMinasAdjuntas(int i, int j) {
-		return 1;
-	}
+		int a;
+		// Contador de Minas alrededor
+		int c = 0;
+
+		// Si la casilla es una esquina
+		// Esquina superior izquierda
+		// Se comprueba la casilla de la derecha, de abajo y la esquina inferior izquierda
+		if (i == 0 && j == 0) {
+			//Casilla derecha
+			if (tablero[i][j +1] == MINA) {
+				c++;
+			}
+			//Casilla abajo
+			if (tablero[i+1][j] == MINA) {
+				c++;
+			}
+			//casilla esquina abajo-derecha
+			if (tablero[i+1][j + 1] == MINA) {
+				c++;
+			}
+		}
+		// Esquina superior derecha
+		// Se comprueba la casilla de la izquieda, de abajo y la esquina inferior derecha
+		if (i == 0 && j == 9) {
+			//Casilla izquierda
+			if (tablero[i][j -1] == MINA) {
+				c++;
+			}
+			//Casilla abajo
+			if (tablero[i+1][j] == MINA) {
+				c++;
+			}
+			//casilla esquina abajo-izquierda
+			if (tablero[i+1][j - 1] == MINA) {
+				c++;
+			}
+		}
+		// Esquina inferior izquierda
+		// Se comprueba la casilla de la derecha, de arriba y la esquina superior derecha
+		if (i == 9 && j == 0) {
+			//Casilla derecha
+			if (tablero[i][j +1] == MINA) {
+				c++;
+			}
+			//Casilla arriba
+			if (tablero[i-1][j] == MINA) {
+				c++;
+			}
+			//casilla esquina superior-derecha
+			if (tablero[i-1][j + 1] == MINA) {
+				c++;
+			}
+		}
+		// Esquina inferior derecha
+		// Se comprueba la casilla de la izquieda, de arriba y la esquina superior derecha
+		if (i == 9 && j == 9) {
+			//Casilla izquierda
+			if (tablero[i][j -1] == MINA) {
+				c++;
+			}
+			//Casilla abajo
+			if (tablero[i-1][j] == MINA) {
+				c++;
+			}
+			//casilla esquina abajo-izquierda
+			if (tablero[i-1][j - 1] == MINA) {
+				c++;
+			}
+		}
+
+		// Si la casilla no es esquinas
+		if (!((i == 0 && j == 0) || (i == 0 && j == 9) || (i == 9 && j == 0) || (i == 9 && j == 9))) {
+			// Dependiendo de la fila
+			switch (i) {
+			// Si es la 0
+			// Se comprueba la casilla de la izquierda, derecha y las tres inferiores
+			case 0: {
+				// Casillas izquierda
+				if (tablero[i][j - 1] == MINA) {
+					c++;
+				}
+				// Casillas derecha
+				if (tablero[i][j + 1] == MINA) {
+					c++;
+				}
+				// Casillas inferiores
+				for (a = -1; a <= 1; a++) {
+					if (tablero[i + 1][j + a] == MINA) {
+						c++;
+					}
+				}
+				break;
+			}
+			// Si es la 9
+			// Se comprueba la casilla de la izquierda, derecha y las tres superiores
+			case 9: {
+				// Casillas izquierda
+				if (tablero[i][j - 1] == MINA) {
+					c++;
+				}
+				// Casillas derecha
+				if (tablero[i][j + 1] == MINA) {
+					c++;
+				}
+				// Casillas inferiores
+				for (a = -1; a <= 1; a++) {
+					if (tablero[i - 1][j + a] == MINA) {
+						c++;
+					}
+				}
+				break;
+			}
+			}
+
+			// Dependiendo de la columna
+			switch (j) {
+			// Si es la columna 0
+			// Se comprueba la casilla de arriba, abajo y las tres casillas de la derecha
+			case 0: {
+				// Casillas arriba
+				if (tablero[i + 1][j] == MINA) {
+					c++;
+				}
+				// Casillas abajo
+				if (tablero[i - 1][j] == MINA) {
+					c++;
+				}
+				// Lateral derecha
+				for (a = -1; a <= 1; a++) {
+					if (tablero[i + a][j +1] == MINA) {
+						c++;
+					}
+				}
+				break;
+			}
+			// Si es la columna 9
+			// Se comprueba la casilla de arriba, abajo y las tres casillas de la izquierda
+			case 9: {
+				// Casillas arriba
+				if (tablero[i + 1][j] == MINA) {
+					c++;
+				}
+				// Casillas abajo
+				if (tablero[i - 1][j] == MINA) {
+					c++;
+				}
+				// Lateral izquierda
+				for (a = -1; a <= 1; a++) {
+					if (tablero[i - a][j -1] == MINA) {
+						c++;
+					}
+				}	
+				break;
+			}
+			}
+		}//if de si no es esquina
+
+		return c;
+	}//Fin de calculo minas en casillas cerca del limite
 
 	/**
 	 * Método que nos permite
@@ -145,7 +303,7 @@ public class ControlJuego {
 			}
 			System.out.println();
 		}
-		System.out.println("\nPuntuación: " + puntuacion);
+		System.out.println("\nPuntuaci�n: " + puntuacion);
 	}
 
 	/**
@@ -161,7 +319,7 @@ public class ControlJuego {
 	 * @return Un entero que representa el número de minas alrededor de la celda
 	 */
 	public int getMinasAlrededor(int i, int j) {
-		// Contador de Minas alrededor 
+		// Contador de Minas alrededor
 		int c = 0;
 		// Casillas superiores
 		if (tablero[i - 1][j + 1] == MINA) {
@@ -181,10 +339,10 @@ public class ControlJuego {
 		}
 		// Dos casillas laterales
 		if (tablero[i][j - 1] == MINA) {
-			 c++;
+			c++;
 		}
 		if (tablero[i][j + 1] == MINA) {
-			 c++;
+			c++;
 		}
 		return c;
 	}// Fin de obtener minas con casilla sin limites
