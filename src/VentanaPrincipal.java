@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -64,12 +65,17 @@ public class VentanaPrincipal {
 		botonEmpezar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				ventana.remove(panelJuego);
+				ventana.remove(panelPuntuacion);
+				ventana.remove(panelImagen);
+				ventana.remove(panelEmpezar);
+				inicializar();
 				juego = new ControlJuego();
+
 				refrescarPantalla();
 			}
 		});
-		
+
 		pantallaPuntuacion = new JTextField("0");
 		pantallaPuntuacion.setEditable(false);
 		pantallaPuntuacion.setHorizontalAlignment(SwingConstants.CENTER);
@@ -145,11 +151,11 @@ public class VentanaPrincipal {
 	 * programa
 	 */
 	public void inicializarListeners() {
+		// Por cada boton
 		for (int i = 0; i < botonesJuego.length; i++) {
 			for (int j = 0; j < botonesJuego[i].length; j++) {
-
+				// Le colocaos un escuchador
 				botonesJuego[i][j].addActionListener(new ActionBoton(this, i, j));
-
 			}
 		}
 	}
@@ -174,31 +180,25 @@ public class VentanaPrincipal {
 		panelesJuego[i][j].remove(botonesJuego[i][j]);
 		label = new JLabel("", SwingConstants.CENTER);
 		label.setText(String.valueOf(minas));
-
+		// Dependiendo de las minas alrededor el color del label setá distinto
 		switch (minas) {
 		case 0:
 			label.setForeground(correspondenciaColores[minas]);
 			break;
 		case 1:
 			label.setForeground(correspondenciaColores[minas]);
-
 			break;
 		case 2:
 			label.setForeground(correspondenciaColores[minas]);
-
 			break;
 		case 3:
 			label.setForeground(correspondenciaColores[minas]);
-
 			break;
 		case 4:
 			label.setForeground(correspondenciaColores[minas]);
-
 			break;
-
 		default:
 			label.setForeground(Color.RED);
-
 			break;
 		}
 		panelesJuego[i][j].add(label);
@@ -215,7 +215,21 @@ public class VentanaPrincipal {
 	 *       juego.
 	 */
 	public void mostrarFinJuego(boolean porExplosion) {
-		// TODO
+		// Si se pulso un boton con mina
+		if (!porExplosion) {
+			// Se muestra por mensaje
+			JOptionPane.showMessageDialog(null, "Explotó una mina...", "¡Intentalo de nuevo!",
+					JOptionPane.ERROR_MESSAGE);
+			// Todos los botones se desactivan
+			for (int i = 0; i < botonesJuego.length; i++) {
+				for (int j = 0; j < botonesJuego.length; j++) {
+					botonesJuego[i][j].setEnabled(false);
+					}
+			}
+		} else {
+			// Si se llego a la puntuacion maxima
+			JOptionPane.showMessageDialog(null, "Victoria", "¡Enhorabuena!", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	/**

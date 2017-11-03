@@ -29,16 +29,16 @@ public class ActionBoton implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ventana.mostrarNumMinasAlrededor(fila, col);		
-		
-		if(!ventana.juego.abrirCasilla(fila, col)) {
-			JOptionPane.showMessageDialog(null, "Explotó una mina...", "¡Intentalo de nuevo!", JOptionPane.ERROR_MESSAGE);
+		ventana.mostrarNumMinasAlrededor(fila, col);
+		//Si la casilla pulsada no es una mina se juega
+		if(!ventana.juego.abrirCasilla(fila, col)) {				
+			ventana.mostrarFinJuego(false);
 			ventana.actualizarPuntuacion();
 			ventana.refrescarPantalla();
 		}
-
+		//Si la casilla abierta es una mina
 		if (ventana.juego.esFinJuego()) {
-			JOptionPane.showMessageDialog(null, "Victoria", "¡Enhorabuena!", JOptionPane.ERROR_MESSAGE);
+			ventana.mostrarFinJuego(true);	
 			ventana.actualizarPuntuacion();
 			ventana.refrescarPantalla();
 		}

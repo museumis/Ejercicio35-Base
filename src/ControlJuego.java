@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -22,13 +21,10 @@ public class ControlJuego {
 	public ControlJuego() {
 		// Creamos el tablero:
 		tablero = new int[LADO_TABLERO][LADO_TABLERO];
-
 		// Inicializamos una nueva partida
 		inicializarPartida();
 		depurarTablero();
-
 	}
-
 	/**
 	 * Método para generar un nuevo tablero de partida:
 	 * 
@@ -81,14 +77,15 @@ public class ControlJuego {
 	 **/
 	private int calculoMinasAdjuntas(int i, int j) {
 		int c = 0;
+		//Obtenemos las ocho casillas alrededor de la mina
 		for (int x = i - 1; x <= i + 1; x++) {
 			for (int k = j - 1; k <= j + 1; k++) {
 				try {
+					//Si es una mina sumamos al contador
 					if (tablero[x][k] == MINA) {
 						c++;
 					}
 				} catch (Exception e) {
-					// TODO: handle exception
 				}
 			}
 		}
@@ -108,14 +105,13 @@ public class ControlJuego {
 	 * @return : Verdadero si no ha explotado una mina. Falso en caso contrario.
 	 */
 	public boolean abrirCasilla(int i, int j) {
-
+		//Si no es una mina  sumamos un punto al total
 		if (tablero[i][j] != MINA) {
 			this.puntuacion++;
 			return true;
 		} else {
 			return false;
 		}
-
 	}
 
 	/**
@@ -125,14 +121,14 @@ public class ControlJuego {
 	 * @return Devuelve verdadero si se han abierto todas las celdas que no son
 	 *         minas.
 	 **/
-	public boolean esFinJuego() {
+	public boolean esFinJuego() {		
 		int puntuacionPosible = (LADO_TABLERO * LADO_TABLERO) - MINAS_INICIALES;
+		//Si la puntuacion es la maxima sera fin de juego
 		if (puntuacion == puntuacionPosible) {
 			return true;
 		} else {
 			return false;
 		}
-
 	}
 
 	/**
